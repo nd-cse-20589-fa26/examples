@@ -46,8 +46,15 @@ def main(arguments: list=sys.argv[1:]) -> None:
     14
     FizzBuzz
     '''
-    start = int(arguments[0])
-    stop  = int(arguments[1])
+    try:
+        start = int(arguments[0])
+    except IndexError:
+        start = 1
+
+    try:
+        stop  = int(arguments[1])
+    except IndexError:
+        stop  = 100
 
     fizzbuzz(start, stop)
 
