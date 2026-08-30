@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 
 arguments = sys.argv[1:]
@@ -9,4 +11,4 @@ while arguments and arguments[0].startswith('-'):
         case '-h': usage(0)
         case _:    usage(1)
 
-print(field)
+print(f'{field=}')
