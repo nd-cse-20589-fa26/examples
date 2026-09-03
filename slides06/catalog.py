@@ -19,9 +19,6 @@ def query_machines(url: str, types: set[str], owners: set[str]) -> list[dict]:
     machines = []
     machine  = {}
 
-    # Ignore SSL Cert warning
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
     for line in response.text.splitlines():
         if not line.strip():                    # Empty line, check filters
             if ((not types  or machine.get('type')  in types) and
@@ -51,4 +48,6 @@ def main(arguments: list[str]=sys.argv[1:]):
         print(f'{machine["type"]}\t{machine["name"]}\t{machine["owner"]}')
 
 if __name__ == '__main__':
+    # Ignore SSL Cert warning
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     main()
