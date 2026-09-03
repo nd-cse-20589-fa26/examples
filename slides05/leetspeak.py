@@ -18,7 +18,7 @@ def leetspeak(text: str, mapping: dict[str, str]) -> str:
 
 # Main Execution
 
-def main(arguments: list[str]=sys.argv[1:]):
+def main(arguments: list[str]=sys.argv[1:], stream=sys.stdin):
     fr_chars = 'aeio'
     to_chars = '4310'
 
@@ -33,13 +33,13 @@ def main(arguments: list[str]=sys.argv[1:]):
     for fr, to in zip(fr_chars, to_chars):
         mapping[fr] = to
 
-    for line in sys.stdin:
+    for line in stream:
         print(leetspeak(line, mapping), end='')
 
     '''
     # Stream output to cowsay process
     with subprocess.Popen(['cowsay'], stdin=subprocess.PIPE, text=True) as process:
-        for line in sys.stdin:
+        for line in stream:
             process.stdin.write(leetspeak(line, mapping))
     '''
 
