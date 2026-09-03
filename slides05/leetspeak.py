@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import subprocess
 import sys
 
 # Functions
@@ -34,6 +35,13 @@ def main(arguments: list[str]=sys.argv[1:]):
 
     for line in sys.stdin:
         print(leetspeak(line, mapping), end='')
+
+    '''
+    # Stream output to cowsay process
+    with subprocess.Popen(['cowsay'], stdin=subprocess.PIPE, text=True) as process:
+        for line in sys.stdin:
+            process.stdin.write(leetspeak(line, mapping))
+    '''
 
 if __name__ == '__main__':
     main()
