@@ -6,10 +6,6 @@ import sys
 
 from typing import Optional
 
-# Constants
-
-HTML_TITLE_RX = r'<head>.*<title>([^<]+)</title>.*</head>'
-
 # Functions
 
 def usage(status: int=0):
@@ -23,8 +19,9 @@ def html_title(url: str) -> Optional[str]:
     'University of Notre Dame'
     '''
     response = requests.get(url)
+    title_rx = r'<head>.*<title>([^<]+)</title>.*</head>'
 
-    if title := re.search(HTML_TITLE_RX, response.text, flags=re.DOTALL):
+    if title := re.search(title_rx, response.text, flags=re.DOTALL):
         return title[1]
 
     return None
@@ -32,11 +29,10 @@ def html_title(url: str) -> Optional[str]:
 # Main Execution
 
 def main(arguments: list[str]=sys.argv[1:]) -> None:
-    try:
-        url = arguments[0]
-    except IndexError:
+    if not arguments:
         usage(1)
 
+    url = arguments[0]
     print(html_title(url))
 
 if __name__ == '__main__':
