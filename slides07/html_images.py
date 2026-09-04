@@ -10,10 +10,10 @@ def usage(status: int=0):
     print(f'usage: html_title.py URL')
     sys.exit(status)
 
-def find_images(url: str) -> list[str]:
+def html_images(url: str) -> list[str]:
     ''' Returns all image sources at URL
 
-    >>> find_images('https://pnutz.h4x0r.space/courses/cse.20589.fa26')
+    >>> html_images('https://pnutz.h4x0r.space/courses/cse.20589.fa26')
     ['static/img/software-systems.png', 'static/img/office-hours.png']
     '''
     response   = requests.get(url)
@@ -28,7 +28,7 @@ def main(arguments: list[str]=sys.argv[1:]) -> None:
         
     url = arguments[0]
 
-    for img_src in find_images(url):
+    for img_src in html_images(url):
         print(img_src)
 
 if __name__ == '__main__':
