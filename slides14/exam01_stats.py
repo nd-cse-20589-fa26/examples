@@ -14,8 +14,8 @@ data = requests.get(URL).text.splitlines()
 
 scores = []
 for student in csv.reader(data):        # Discuss: csv.reader
-    points = []                         # Dicusss: high-level goal
-    for point in student:               # Dicusss: common pattern?
+    points = []                         # Discuss: high-level goal
+    for point in student:               # Discuss: common pattern?
         points.append(float(point))
     scores.append(sum(points))
 
