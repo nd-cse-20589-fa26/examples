@@ -2,6 +2,10 @@
 
 from typing import Iterable, Iterator
 
+# Constants
+
+CHUNKS = [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
+
 # Iterator
 
 class Flatten:
@@ -30,18 +34,6 @@ class Flatten:
 
         return element
 
-Chunks = [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
-
-for number in Chunks:
-    print(number)
-
-print()
-
-for number in Flatten(Chunks):
-    print(number)
-
-print()
-
 # Generator
 
 def flatten(sequence: Iterable[Iterable[int]]) -> Iterator[int]:
@@ -55,7 +47,19 @@ def flatten(sequence: Iterable[Iterable[int]]) -> Iterator[int]:
     for subsequence in sequence:
         yield from subsequence
 
-for number in flatten(Chunks):
+# Main Execution
+
+for number in CHUNKS:
+    print(number)
+
+print()
+
+for number in Flatten(CHUNKS):
+    print(number)
+
+print()
+
+for number in flatten(CHUNKS):
     print(number)
 
 print()
