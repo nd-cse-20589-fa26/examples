@@ -19,7 +19,6 @@ class Timer:
     def reset(self):
         self.start_time = time.time()
 
-    @property
     def elapsed_time(self) -> float:
         stop_time = self.stop_time or time.time()
         return stop_time - self.start_time
@@ -29,13 +28,15 @@ class Timer:
 
 timer = Timer()
 print(timer)
-print(timer.elapsed_time)
+
+print(timer.elapsed_time())
 time.sleep(1)
-print(timer.elapsed_time)
+print(timer.elapsed_time())
 time.sleep(1)
+
 timer.stop()
 time.sleep(1)
-print(timer.elapsed_time)
+print(timer.elapsed_time())
 '''
 
 ''' Version 2 '''
