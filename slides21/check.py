@@ -26,7 +26,7 @@ def is_file_nonempty(path: str) -> bool:
 
 def main(arguments: list[str]=sys.argv[1:]):
     if len(arguments) != 2:
-        sys.exit(1)
+        usage(1)
 
     flag, path = arguments
 
@@ -37,6 +37,7 @@ def main(arguments: list[str]=sys.argv[1:]):
         case '-d': sys.exit(0 if os.path.isdir(path) else 1)
         case '-f': sys.exit(0 if os.path.isfile(path) else 1)
         case '-s': sys.exit(0 if is_file_nonempty(path) else 1)
+        case _   : usage(1)
 
 if __name__ == '__main__':
     main()
