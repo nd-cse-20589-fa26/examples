@@ -18,7 +18,7 @@ def usage(status: int=0):
 
 def is_file_nonempty(path: str) -> bool:
     try:
-        return os.stat(path).st_size > 0
+        return os.path.getsize(path) > 0
     except OSError:
         return False
 
