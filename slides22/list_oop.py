@@ -4,6 +4,7 @@ import os
 import stat
 import sys
 
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from itertools import cycle
 from pathlib import Path
@@ -16,9 +17,14 @@ class PathEntry(Path):
         return self.parent / self
 
 @dataclass
-class BaseWalker:
+class BaseWalker(ABC):
     entry:  os.DirEntry | PathEntry
 
+    @abstractmethod
+    def walk(self, recursive: bool=False):
+        pass
+
+class NoopWalker(BaseWalker):
     def walk(self, recursive: bool=False):
         pass
 
@@ -37,11 +43,11 @@ class DirectoryWalker(BaseWalker):
 
 class WalkerFactory:
     @classmethod
-    def get_walker(cls, entry: os.DirEntry | PathEntry, recursive: bool=False):
+    def get_walker(cls, entry: os.DirEntry | PathEntry, recursive: bool=False) -> BaseWalker:
         match stat.S_IFMT(entry.stat().st_mode):
             case stat.S_IFREG: return FileWalker(entry)
-            case stat.S_IFDIR: return DirectoryWalker(entry) if recursive else BaseWalker(entry)
-            case _:            return BaseWalker(entry)
+            case stat.S_IFDIR: return DirectoryWalker(entry) if recursive else NoopWalker(entry)
+            case _:            return NoopWalker(entry)
 
 # Functions
 
