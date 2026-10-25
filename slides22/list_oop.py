@@ -15,14 +15,6 @@ class PathEntry(Path):
     def path(self):
         return self.parent / self
 
-class WalkerFactory:
-    @classmethod
-    def get_walker(cls, entry: os.DirEntry | PathEntry, recursive: bool=False):
-        match stat.S_IFMT(entry.stat().st_mode):
-            case stat.S_IFREG: return FileWalker(entry)
-            case stat.S_IFDIR: return DirectoryWalker(entry) if recursive else BaseWalker(entry)
-            case _:            return BaseWalker(entry)
-
 @dataclass
 class BaseWalker:
     entry:  os.DirEntry | PathEntry
@@ -42,6 +34,14 @@ class DirectoryWalker(BaseWalker):
                     entry.walk(recursive)
         except PermissionError:
             pass
+
+class WalkerFactory:
+    @classmethod
+    def get_walker(cls, entry: os.DirEntry | PathEntry, recursive: bool=False):
+        match stat.S_IFMT(entry.stat().st_mode):
+            case stat.S_IFREG: return FileWalker(entry)
+            case stat.S_IFDIR: return DirectoryWalker(entry) if recursive else BaseWalker(entry)
+            case _:            return BaseWalker(entry)
 
 # Functions
 
