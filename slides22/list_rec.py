@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import stat
 import sys
 
 # Functions
@@ -12,6 +13,7 @@ def usage(status: int=0):
     sys.exit(status)
 
 def walk_directory(path: str, recursive: bool=False):
+    ''' Traditional recursive approach '''
     if not os.path.isdir(path) or not os.access(path, os.R_OK):
         return
 
