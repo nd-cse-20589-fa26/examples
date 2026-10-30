@@ -29,7 +29,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
         client, address = server.accept()
 
         with client:
-            print(f'Accepted connection from {address}')
+            print(f'Accepted connection from {address[0]}:{address[1]}')
 
             # Read from client and send it back
             while request := client.recv(BUFSIZ):
