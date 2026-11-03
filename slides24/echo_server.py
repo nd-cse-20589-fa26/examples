@@ -16,7 +16,7 @@ except IndexError:
     print('Usage: echo_server.py port', file=sys.stderr)
     sys.exit(1)
 
-# Connect to remote machine at host and port
+# Create and advertise server socket
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
     # Bind to port and begin listening
