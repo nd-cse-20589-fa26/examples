@@ -6,10 +6,6 @@ import sys
 
 from urllib.parse import urlsplit
 
-# Constants
-
-BUFSIZ = (1<<10)
-
 # Parse command line arguments
 
 try:
