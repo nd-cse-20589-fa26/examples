@@ -3,6 +3,7 @@
 import datetime
 import logging
 import os
+import signal
 import socket
 import sys
 
@@ -41,6 +42,9 @@ class HTTPServer:
         client.close()
 
     def serve_forever(self):
+        # Ignore children (let init adopt them)
+        signal.signal(signal.SIGCHLD, signal.SIG_IGN)
+
         while True:
             # Accept one client
             client, address = self.socket.accept()
