@@ -38,9 +38,6 @@ class HTTPServer:
             wfile.write('\r\n')
             wfile.write(str(datetime.datetime.now()))
 
-        # Terminate connection
-        client.close()
-
     def serve_forever(self):
         # Ignore children (let init adopt them)
         signal.signal(signal.SIGCHLD, signal.SIG_IGN)
@@ -51,11 +48,10 @@ class HTTPServer:
             logging.info('Accepted client from %s:%d', address[0], address[1])
 
             # Fork child process and let it handle client
-            if (pid := os.fork()) == 0:     # Child
-                self.handle_client(client, address)
-                sys.exit(0)
-            else:                           # Parent
-                client.close()
+            with client:
+                if os.fork() == 0:      # Child
+                    self.handle_client(client, address)
+                    sys.exit(0)
 
 # Main Execution
 
