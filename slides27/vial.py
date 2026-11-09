@@ -44,8 +44,8 @@ class VialRequestHandler(BaseHTTPRequestHandler):
             return self.write_error(405)
 
         for pattern, callback in VialRequestHandler.Routes[method].items():
-            if match := re.fullmatch(pattern, self.url.path):
-                result = callback(self, *match.groups())
+            if matched := re.fullmatch(pattern, self.url.path):
+                result = callback(self, *matched.groups())
                 match result:
                     case int():  return self.write_error(result)
                     case str():  response, *args = result, 200, 'text/plain'
