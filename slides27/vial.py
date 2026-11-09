@@ -84,7 +84,7 @@ class VialRequestHandler(BaseHTTPRequestHandler):
 
 
 class Vial(HTTPServer):
-    def __init__(self, host, port, attributes=None):
+    def __init__(self, host: str='127.0.0.1', port: int=8080, attributes=None):
         super().__init__((host, port), VialRequestHandler)
         if attributes:
             for key, value in attributes.items():
