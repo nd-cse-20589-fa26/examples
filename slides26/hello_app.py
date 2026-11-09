@@ -11,7 +11,7 @@ from urllib.parse import parse_qsl, urlparse
 
 class HelloRequestHandler(BaseHTTPRequestHandler):
 
-    default_name: str='Unknown'
+    greeting: str='Hello'
 
     # Helper Properties from RealPython
 
@@ -52,19 +52,19 @@ class HelloRequestHandler(BaseHTTPRequestHandler):
         self.send_header('Content-Type', 'text/plain')
         self.end_headers()
 
-        name = self.query_data.get('name', self.default_name)
-        self.wfile.write(f'Hello, {name}'.encode())
+        name = self.query_data.get('name', 'Unkown')
+        self.wfile.write(f'{self.greeting}, {name}'.encode())
 
     def do_POST(self):
-        if not (name := self.form_data.get('name')):
+        if not (greeting := self.form_data.get('greeting')):
             self.send_response(400)
 
         self.send_response(200)
         self.send_header('Content-Type', 'text/plain')
         self.end_headers()
 
-        HelloRequestHandler.default_name = name
-        self.wfile.write(f'Default name is {HelloRequestHandler.default_name}'.encode())
+        HelloRequestHandler.greeting = greeting
+        self.wfile.write(f'Greeting is {HelloRequestHandler.greeting}'.encode())
 
 # Main Execution
 
