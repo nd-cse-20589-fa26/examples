@@ -84,8 +84,11 @@ class VialRequestHandler(BaseHTTPRequestHandler):
 
 
 class Vial(HTTPServer):
-    def __init__(self, host, port):
+    def __init__(self, host, port, attributes=None):
         super().__init__((host, port), VialRequestHandler)
+        if attributes:
+            for key, value in attributes.items():
+                setattr(self, key, value)
 
     def route(self, pattern: str, methods: list[str]=['GET']):
         def decorator(callback):
