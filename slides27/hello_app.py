@@ -15,19 +15,20 @@ except IndexError:
 
 # Globals
 
-App = Vial(HOST, PORT, {'default_name': 'Unknown'})
+App = Vial(HOST, PORT, {'greeting': 'Hello', 'default_name': 'Unknown'})
 
 # Handlers
 
-@App.route('/')
+@App.route('/greeting')
 def greet(request):
     name = request.query_data.get('name', App.default_name)
-    return f'Hello, {name}!'
+    return f'{App.greeting}, {name}!'
 
-@App.route('/', methods=['POST', 'PUT'])
-def update_name(request):
+@App.route('/greeting', methods=['POST', 'PUT'])
+def update(request):
+    App.greeting     = request.form_data.get('greeting', App.greeting)
     App.default_name = request.form_data.get('name', App.default_name)
-    return f'Default name is {App.default_name}'
+    return {'greeting': App.greeting, 'default_name': App.default_name}
 
 # Main Execution
 
