@@ -24,7 +24,7 @@ def greet(request):
     name = request.query_data.get('name', App.default_name)
     return f'Hello, {name}!'
 
-@App.route('/', methods=['POST'])
+@App.route('/', methods=['POST', 'PUT'])
 def update_name(request):
     App.default_name = request.form_data.get('name', App.default_name)
     return f'Default name is {App.default_name}'
