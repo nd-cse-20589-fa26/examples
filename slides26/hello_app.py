@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import logging
 import sys
 
 from functools import cached_property
@@ -60,11 +59,11 @@ class HelloRequestHandler(BaseHTTPRequestHandler):
         if not (name := self.form_data.get('name')):
             self.send_response(400)
 
-        HelloRequestHandler.default_name = name
-
         self.send_response(200)
         self.send_header('Content-Type', 'text/plain')
         self.end_headers()
+
+        HelloRequestHandler.default_name = name
         self.wfile.write(f'Default name is {HelloRequestHandler.default_name}'.encode())
 
 # Main Execution
