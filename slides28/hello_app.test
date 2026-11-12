@@ -41,46 +41,78 @@ class HelloTest(unittest.TestCase):
         cls.logfile.close()
 
     def test_01_greeting_get_default(self):
-        response = requests.get(f'http://{self.host}:{self.port}/greeting')
+        # Perform operation and get results
+        endpoint = f'http://{self.host}:{self.port}/greeting'
+        response = requests.get(endpoint)
+
+        # Assertions that compare output with expected result
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.text, 'Hello, Unknown!')
 
     def test_02_greeting_get_name(self):
+        # Perform operation and get results
+        endpoint = f'http://{self.host}:{self.port}/greeting'
         params   = {'name': os.environ['USER']}
-        response = requests.get(f'http://{self.host}:{self.port}/greeting', params=params)
+        response = requests.get(endpoint, params=params)
+
+        # Assertions that compare output with expected result
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.text, f'Hello, {os.environ["USER"]}!')
 
     def test_03_greeting_bad_method(self):
-        response = requests.delete(f'http://{self.host}:{self.port}/greeting')
+        # Perform operation and get results
+        endpoint = f'http://{self.host}:{self.port}/greeting'
+        response = requests.delete(endpoint)
+
+        # Assertions that compare output with expected result
         self.assertEqual(response.status_code, 405)
         self.assertEqual(response.text, 'Method Not Allowed')
 
     def test_04_greeting_post_default(self):
-        response = requests.post(f'http://{self.host}:{self.port}/greeting')
+        # Perform operation and get results
+        endpoint = f'http://{self.host}:{self.port}/greeting'
+        response = requests.post(endpoint)
+
+        # Assertions that compare output with expected result
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.text), {'greeting': 'Hello', 'default_name': 'Unknown'})
 
     def test_05_greeting_post_greeting(self):
+        # Perform operation and get results
+        endpoint = f'http://{self.host}:{self.port}/greeting'
         data     = {'greeting': 'Hola'}
-        response = requests.post(f'http://{self.host}:{self.port}/greeting', json=data)
+        response = requests.post(endpoint, json=data)
+
+        # Assertions that compare output with expected result
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.text), {'greeting': 'Hola', 'default_name': 'Unknown'})
 
     def test_06_greeting_post_name(self):
+        # Perform operation and get results
+        endpoint = f'http://{self.host}:{self.port}/greeting'
         data     = {'name': 'Anonymous'}
-        response = requests.post(f'http://{self.host}:{self.port}/greeting', json=data)
+        response = requests.post(endpoint, json=data)
+
+        # Assertions that compare output with expected result
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.text), {'greeting': 'Hola', 'default_name': 'Anonymous'})
 
     def test_07_greeting_get_default(self):
-        response = requests.get(f'http://{self.host}:{self.port}/greeting')
+        # Perform operation and get results
+        endpoint = f'http://{self.host}:{self.port}/greeting'
+        response = requests.get(endpoint)
+
+        # Assertions that compare output with expected result
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.text, 'Hola, Anonymous!')
 
     def test_08_greeting_get_name(self):
+        # Perform operation and get results
+        endpoint = f'http://{self.host}:{self.port}/greeting'
         params   = {'name': os.environ['USER']}
-        response = requests.get(f'http://{self.host}:{self.port}/greeting', params=params)
+        response = requests.get(endpoint, params=params)
+
+        # Assertions that compare output with expected result
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.text, f'Hola, {os.environ["USER"]}!')
 
