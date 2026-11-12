@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+
+import json
+import os
+import random
+import requests
+import subprocess
+import time
+import unittest
+
+# Functions
+
+def find_open_port(start: int=9000, end: int=9999) -> int:
+    with os.popen("ss -tlpn | awk '{print $4}' | cut -d : -f 2") as stream:
+        used_ports = {int(port) for port in stream if port.strip().isnumeric()}
+        while (port := random.randint(start, end)) in used_ports: pass
+        return port
+
+# Unit Tests
+
+class HelloTest(unittest.TestCase):
+    ''' Hello Unit Tests '''
+
+    @classmethod
+    def setUpClass(cls):
+        cls.host    = '127.0.0.1'
+        cls.port    = str(find_open_port())
+        cls.logfile = open('hello_app.log', 'w')
+        cls.process = subprocess.Popen(
+            ['python3', '../slides27/hello_app.py', cls.host, cls.port],
+            stdout  = cls.logfile,
+            stderr  = cls.logfile,
+        )
+
+        time.sleep(0.25)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.process.terminate()
+        cls.process.wait()
+        cls.logfile.close()
+
+    def test_01_greeting_get_default(self):
+        response = requests.get(f'http://{self.host}:{self.port}/greeting')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.text, 'Hello, Unknown!')
+
+    def test_02_greeting_get_name(self):
+        params   = {'name': os.environ['USER']}
+        response = requests.get(f'http://{self.host}:{self.port}/greeting', params=params)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.text, f'Hello, {os.environ["USER"]}!')
+
+    def test_03_greeting_bad_method(self):
+        response = requests.delete(f'http://{self.host}:{self.port}/greeting')
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.text, 'Method Not Allowed')
+
+    def test_04_greeting_post_default(self):
+        response = requests.post(f'http://{self.host}:{self.port}/greeting')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.text), {'greeting': 'Hello', 'default_name': 'Unknown'})
+
+    def test_05_greeting_post_greeting(self):
+        data     = {'greeting': 'Hola'}
+        response = requests.post(f'http://{self.host}:{self.port}/greeting', json=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.text), {'greeting': 'Hola', 'default_name': 'Unknown'})
+
+    def test_06_greeting_post_name(self):
+        data     = {'name': 'Anonymous'}
+        response = requests.post(f'http://{self.host}:{self.port}/greeting', json=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.text), {'greeting': 'Hola', 'default_name': 'Anonymous'})
+
+    def test_07_greeting_get_default(self):
+        response = requests.get(f'http://{self.host}:{self.port}/greeting')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.text, 'Hola, Anonymous!')
+
+    def test_08_greeting_get_name(self):
+        params   = {'name': os.environ['USER']}
+        response = requests.get(f'http://{self.host}:{self.port}/greeting', params=params)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.text, f'Hola, {os.environ["USER"]}!')
+
+# Main Execution
+
+if __name__ == '__main__':
+    unittest.main()
+
+# vim: set sts=4 sw=4 ts=8 expandtab ft=python:
