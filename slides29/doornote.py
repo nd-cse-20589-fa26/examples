@@ -35,6 +35,7 @@ class Database0:
             self.rooms[room] = [message]
 
     def count(self, room: str) -> int:
+        ''' Return number of messages for room. '''
         return len(self.rooms.get(room, []))
 
 class Database1:
@@ -59,6 +60,7 @@ class Database1:
             stream.write(f'{message}\n')
 
     def count(self, room: str) -> int:
+        ''' Return number of messages for room. '''
         path = f'{self.prefix}.{room}'
         with open(path) as stream:
             return sum(1 for _ in stream)
@@ -95,6 +97,7 @@ class Database2:
         self.save()
 
     def count(self, room: str) -> int:
+        ''' Return number of messages for room. '''
         return len(self.rooms.get(room, []))
 
 # Globals
