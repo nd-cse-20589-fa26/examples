@@ -23,8 +23,8 @@ class Database:
     SQL_CREATE_MESSAGES = '''
     CREATE TABLE IF NOT EXISTS Messages(
         id          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        room        TEXT NOT NULL,
-        message     TEXT NOT NULL
+        room        VARCHAR(20) NOT NULL,
+        message     VARCHAR(500) NOT NULL
     )
     '''
 
